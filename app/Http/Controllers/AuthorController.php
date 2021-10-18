@@ -47,7 +47,9 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        //
+        $books = $author->authorBooks;
+        $books_count = $books->count();
+        return view("author.show",["author"=>$author, "books"=> $books, "books_count" => $books_count]);
     }
 
     /**
@@ -79,8 +81,16 @@ class AuthorController extends Controller
      * @param  \App\Author  $author
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Author $author)
+    public function destroy(Author $author, Request $request)
     {
+        $books_count = $author->authorBooks->count();
+
+
+        if($books_count!=0) {
+            return redirect()->route("author.index")->with('error_message','The Author cannot be deleted because he has a book/s');
+        }
+
         $author->delete();
+        return redirect()->route("author.index")->with('success_message','The Author was successfully deleted');
     }
 }

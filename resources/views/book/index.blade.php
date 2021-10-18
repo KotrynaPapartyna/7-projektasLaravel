@@ -3,7 +3,18 @@
 @section('content')
 
 <div class="container">
-<table class="table table-striped">
+
+    <div class="card-header">{{ __('BOOKS') }}</div>
+
+    {{--zinute- atvaizduojama pagal veiksma--}}
+    @if(session()->has('success_message'))
+        <div class="alert alert-success">
+            {{session()->get("success_message")}}
+        </div>
+    @endif
+
+
+    <table class="table table-striped">
 
     <tr>
         <th>ID</th>
@@ -18,7 +29,7 @@
     </tr>
                 <td>{{$book->id}}</td>
                 <td>{{$book->name}}</td>
-                <td>{{!!$book->description!!}}</td>
+                <td>{{$book->description}}</td>
                 <td>{{$book->bookAuthor->name}} {{$book->bookAuthor->surname}}</td>
             <td>
                 <a href="{{route('book.edit',[$book])}}" class="btn btn-primary">Edit </a>
@@ -33,11 +44,12 @@
 
             </td>
 
-    </tr>
+        </tr>
 
     @endforeach
 
 
-</table>
+    </table>
 </div>
+
 @endsection
